@@ -12,8 +12,7 @@
   <font size="+2"><a href="https://www.sefaria.org/Leviticus.2.6">ויקרא ב:ו</a></font>
 </p>
 
-Hebrew/English-aware semantic chunking and Gemini embedding pipeline, extracted from
-[Sefaria/ML-Workflows](https://github.com/Sefaria/ML-Workflows) (`app/embeddings/steps/patot`).
+Hebrew/English-aware semantic chunking and Gemini embedding pipeline
 
 ## Installation
 
