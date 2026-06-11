@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "patot"
+version = "0.1.0"
+description = "Hebrew/English-aware semantic chunking and Gemini embedding pipeline for Sefaria texts"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.31.0",
+    "pydantic==2.13.4",
+]
+
+[project.optional-dependencies]
+chunking = [
+    "transformers==4.57.6",
+    "huggingface-hub>=0.23.0",
+    "semantic-chunkers==0.0.9",
+    "semantic-router==0.0.72",
+]
+pdf = [
+    "reportlab>=4.0.0",
+    "python-bidi>=0.4.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/Sefaria/patot"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/patot"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
