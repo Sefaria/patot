@@ -1,8 +1,10 @@
 # patot
 
+![patot logo](assets/logo.png)
+
 פָּת֤וֹת אֹתָהּ֙ פִּתִּ֔ים וְיָצַקְתָּ֥ עָלֶ֖יהָ שָׁ֑מֶן מִנְחָ֖ה הִֽוא
 
-ויקרא ב:ו
+[ויקרא ב:ו](https://www.sefaria.org/Leviticus.2.6)
 
 Hebrew/English-aware semantic chunking and Gemini embedding pipeline, extracted from
 [Sefaria/ML-Workflows](https://github.com/Sefaria/ML-Workflows) (`app/embeddings/steps/patot`).
