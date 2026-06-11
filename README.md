@@ -1,5 +1,9 @@
 # patot
 
+פָּת֤וֹת אֹתָהּ֙ פִּתִּ֔ים וְיָצַקְתָּ֥ עָלֶ֖יהָ שָׁ֑מֶן מִנְחָ֖ה הִֽוא
+
+ויקרא ב:ו
+
 Hebrew/English-aware semantic chunking and Gemini embedding pipeline, extracted from
 [Sefaria/ML-Workflows](https://github.com/Sefaria/ML-Workflows) (`app/embeddings/steps/patot`).
 
