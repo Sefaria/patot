@@ -12,7 +12,7 @@
   <font size="+2"><a href="https://www.sefaria.org/Leviticus.2.6">ויקרא ב:ו</a></font>
 </p>
 
-Patot is a Python toolkit for Hebrew/English-aware semantic chunking and Gemini embedding. It chunks texts into semantically coherent, model-ready units for downstream AI workflows such as embedding, retrieval, and question answering.
+Patot is a Python toolkit for Hebrew/English-aware semantic chunking. It chunks texts into semantically coherent, model-ready units for downstream AI workflows such as embedding, retrieval, and question answering.
 
 [Sefaria](https://www.sefaria.org) is an open-source library and database of Jewish texts. To download Sefaria data for use with Patot, visit [developers.sefaria.org](https://developers.sefaria.org).
 
@@ -45,6 +45,7 @@ Patot uses Aurelio Labs' [`semantic-chunkers`](https://github.com/aurelio-labs/s
 - Each Sefaria segment is treated as an atomic unit.
 - Segment embeddings are compared against local semantic context.
 - Split points are chosen where semantic continuity drops.
+- Semantic continuities/drops are based on comparing Gemini embeddings of the adjacent windows
 - The chunker auto-selects thresholds to keep median chunk size near a configured token target.
 
 Result: coherent multi-segment chunks where appropriate, while preserving original segment boundaries.
