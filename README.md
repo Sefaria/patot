@@ -149,4 +149,4 @@ Patot's semantic-first strategy is built on **semantic-chunkers** by Aurelio Lab
 
 ## License
 
-GNU General Public License v3
+GPL-3.0
