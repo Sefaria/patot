@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "patot"
-version = "0.1.1"
+version = "0.1.2"
 description = "Hebrew/English-aware semantic chunking and Gemini embedding pipeline for Sefaria texts"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -19,7 +19,7 @@ chunking = [
     "transformers==4.57.6",
     "huggingface-hub>=0.23.0",
     "semantic-chunkers>=0.1.1",
-    "semantic-router==0.0.72",
+    "semantic-router>=0.1.0",
 ]
 pdf = [
     "reportlab>=4.0.0",
