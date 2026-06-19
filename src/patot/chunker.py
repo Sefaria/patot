@@ -3,13 +3,13 @@ import os
 import threading
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 from huggingface_hub import snapshot_download
-from pydantic.v1 import BaseModel
-from pydantic.v1 import PrivateAttr
+from pydantic import PrivateAttr
 from semantic_chunkers import StatisticalChunker
 from semantic_chunkers.chunkers import statistical as statistical_chunker_module
+from semantic_router.encoders.base import DenseEncoder
 from transformers import AutoTokenizer
 
 from .config import ChunkerConfig
@@ -48,17 +48,6 @@ def _has_local_tokenizer_files(path: Path) -> bool:
         and all((path / filename).exists() for filename in _TOKENIZER_REQUIRED_FILES)
         and any((path / filename).exists() for filename in _TOKENIZER_VOCAB_FILES)
     )
-
-
-class BaseEncoder(BaseModel):
-    """Minimal encoder contract expected by StatisticalChunker."""
-
-    name: str
-    score_threshold: Optional[float] = None
-    type: str = "base"
-
-    class Config:
-        arbitrary_types_allowed = True
 
 
 @dataclass(frozen=True)
@@ -129,16 +118,16 @@ class PatotChunkResult:
     debug_trace: Optional[DebugTrace] = None
 
 
-class GeminiRouterEncoder(BaseEncoder):
+class GeminiRouterEncoder(DenseEncoder):
     name: str = "repo-gemini"
     score_threshold: Optional[float] = None
     type: str = "gemini"
-    _embedder = PrivateAttr()
-    _doc_task_type = PrivateAttr()
-    _config = PrivateAttr()
+    _embedder: Any = PrivateAttr(default=None)
+    _doc_task_type: Any = PrivateAttr(default=None)
+    _config: Any = PrivateAttr(default=None)
 
-    def __init__(self, api_key: str, config: ChunkerConfig):
-        super().__init__()
+    def __init__(self, api_key: str, config: ChunkerConfig, **kwargs):
+        super().__init__(name="repo-gemini", score_threshold=None, type="gemini", **kwargs)
         _, doc_task_type = EMBEDDING_001_TASK_SETUPS[config.setup]
         self._embedder = GeminiEmbedder(
             api_key=api_key,
