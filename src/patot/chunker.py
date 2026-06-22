@@ -343,6 +343,8 @@ class PatotChunker:
         # only happen inside token-counting methods (_token_length, _token_offsets). It must never
         # affect the text that is stored in chunk.text or sent to the embedding API.
         original_text = text
+        if not self.config.extract_html_footnotes_to_segments:
+            text = remove_html_footnotes(text)
         text = strip_html(text)
         if self.config.strip_hebrew_niqqud:
             text = strip_hebrew_niqqud(text)
