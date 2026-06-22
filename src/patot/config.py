@@ -25,7 +25,6 @@ class ChunkerConfig:
     tokenizer_local_dir: Optional[str] = "/cache/huggingface/models/dicta-il__BEREL_3.0"
     strip_hebrew_niqqud: bool = True
     extract_html_footnotes_to_segments: bool = True
-    stanza_model_dir: str = "/Users/yon/stanza_resources"
     enforce_hard_max_in_pass3: bool = True
     embedding_cache_enabled: bool = True
     embedding_cache_path: str = "/cache/patot/embedding_cache.sqlite"

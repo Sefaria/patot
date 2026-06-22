@@ -115,29 +115,6 @@ def sentence_splitter_for_language(lang: str) -> BaseSplitter:
     return RegexSplitter()
 
 
-class StanzaHebrewSentenceSplitter:
-    def __init__(self, model_dir: str):
-        self.model_dir = model_dir
-        self._pipeline = None
-
-    def _get_pipeline(self):
-        if self._pipeline is None:
-            import stanza
-
-            self._pipeline = stanza.Pipeline(
-                lang="he",
-                processors="tokenize",
-                dir=self.model_dir,
-                verbose=False,
-                use_gpu=False,
-            )
-        return self._pipeline
-
-    def __call__(self, text: str) -> list[str]:
-        doc = self._get_pipeline()(text)
-        return [sentence.text.strip() for sentence in doc.sentences if sentence.text and sentence.text.strip()]
-
-
 def fallback_clause_split(text: str) -> list[str]:
     parts = re.split(r"([:,])", text)
     chunks = []
