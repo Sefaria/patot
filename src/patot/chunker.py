@@ -336,28 +336,25 @@ class PatotChunker:
         normalized = self._normalize_for_tokenizer(text)
         return len(tokenizer.encode(normalized, add_special_tokens=False))
 
-    def _token_offsets(self, text: str) -> list[tuple[int, int]]:
-        tokenizer = self._get_tokenizer()
-        normalized = self._normalize_for_tokenizer(text)
-        encoded = tokenizer(normalized, add_special_tokens=False, return_offsets_mapping=True)
-        return list(encoded["offset_mapping"])
-
     def _preprocess(self, text: str) -> str:
         # Keep preprocessing centralized so pass 1, pass 2, and helper scripts all see the same text.
+        # NOTE: _normalize_for_tokenizer is intentionally NOT called here. Tokenizer vocabulary
+        # normalization (which can substitute unknown characters with literal "[UNK]" strings) must
+        # only happen inside token-counting methods (_token_length, _token_offsets). It must never
+        # affect the text that is stored in chunk.text or sent to the embedding API.
         original_text = text
         text = strip_html(text)
         if self.config.strip_hebrew_niqqud:
             text = strip_hebrew_niqqud(text)
-        text = self._normalize_for_tokenizer(text)
         text = normalize_whitespace(text)
         if self.config.debug:
             self._debug_block(
                 "Preprocess",
                 [
                     f"original_tokens={self._token_length(original_text)}",
-                    f"normalized_tokens={self._token_length(text)}",
+                    f"cleaned_tokens={self._token_length(text)}",
                     f"original_text={original_text}",
-                    f"normalized_text={text}",
+                    f"cleaned_text={text}",
                 ],
             )
         return text
@@ -596,7 +593,13 @@ class PatotChunker:
         if token_count <= self.config.max_split_tokens:
             return [text]
 
-        offsets = self._token_offsets(text)
+        # Normalize once, then tokenize directly (bypassing _token_offsets which would re-normalize).
+        # Offsets are character positions into `normalized`; we slice that same string below.
+        # The normalized text is only used for splitting; it is never stored or embedded.
+        normalized = self._normalize_for_tokenizer(text)
+        tokenizer = self._get_tokenizer()
+        encoded = tokenizer(normalized, add_special_tokens=False, return_offsets_mapping=True)
+        offsets = list(encoded["offset_mapping"])
         if not offsets:
             return [text]
 
@@ -611,7 +614,7 @@ class PatotChunker:
                 break
             start_char = offsets[start_token][0]
             end_char = offsets[end_token - 1][1]
-            piece = text[start_char:end_char].strip()
+            piece = normalized[start_char:end_char].strip()
             if piece:
                 pieces.append(piece)
 
